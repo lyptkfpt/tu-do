@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tủ đồ của tôi</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%236e1423'/%3E%3Ctext x='32' y='44' font-family='Georgia' font-size='34' fill='%23f4ede1' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <p class="kicker">Lookbook cá nhân · Phối từ những món bạn có</p>
+      <h1 class="brand">Tủ đồ <em>của tôi</em></h1>
+    </div>
+    <nav class="tabs" aria-label="Các mục">
+      <a href="#tu-do" class="tab" data-view="wardrobe">Tủ đồ <span class="count" id="count-wardrobe"></span></a>
+      <a href="#phoi-do" class="tab" data-view="mix">Phối đồ</a>
+      <a href="#bo-da-luu" class="tab" data-view="saved">Bộ đã lưu <span class="count" id="count-saved"></span></a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 1. TỦ ĐỒ -->
+    <section id="view-wardrobe" class="view">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">01 — Tủ đồ</p>
+          <h2>Những món bạn đang có</h2>
+        </div>
+        <label class="btn btn-primary upload-btn">
+          + Thêm ảnh
+          <input type="file" id="file-input" accept="image/*" multiple hidden>
+        </label>
+      </div>
+      <p class="hint">Chọn nhiều ảnh cùng lúc được — mỗi ảnh là một món. Ảnh chỉ lưu trong trình duyệt của bạn.</p>
+      <div id="upload-status" class="notice" hidden></div>
+
+      <section id="drafts" class="drafts" hidden>
+        <div class="drafts-head">
+          <div>
+            <p class="eyebrow">Món mới</p>
+            <h3>Điền thông tin cho từng món</h3>
+          </div>
+          <button type="button" id="save-all-drafts" class="btn">Lưu tất cả</button>
+        </div>
+        <div id="draft-list" class="draft-list"></div>
+      </section>
+
+      <div id="type-filter" class="chips" role="group" aria-label="Lọc theo loại món"></div>
+      <div id="wardrobe-grid" class="grid"></div>
+      <div id="wardrobe-empty" class="empty" hidden></div>
+    </section>
+
+    <!-- 2. PHỐI ĐỒ -->
+    <section id="view-mix" class="view" hidden>
+      <p class="eyebrow">02 — Phối đồ</p>
+      <h2>Hôm nay mặc gì?</h2>
+      <form id="mix-form" class="mix-form">
+        <fieldset>
+          <legend>Dịp mặc</legend>
+          <div class="seg" id="occasion-options"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Thời tiết</legend>
+          <div class="seg" id="weather-options"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Phối quanh món này <span class="opt">(không bắt buộc)</span></legend>
+          <p class="anchor-current" id="anchor-current"></p>
+          <div id="anchor-picker" class="anchor-picker"></div>
+        </fieldset>
+        <button type="submit" class="btn btn-primary btn-wide">Gợi ý trang phục</button>
+      </form>
+      <div id="mix-message"></div>
+      <div id="mix-results" class="looks"></div>
+    </section>
+
+    <!-- 3. BỘ ĐÃ LƯU -->
+    <section id="view-saved" class="view" hidden>
+      <p class="eyebrow">03 — Bộ đã lưu</p>
+      <h2>Những bộ bạn yêu thích</h2>
+      <div id="saved-grid" class="saved-grid"></div>
+      <div id="saved-empty" class="empty" hidden></div>
+    </section>
+  </main>
+
+  <footer class="footer">Dữ liệu được lưu trong trình duyệt này (IndexedDB). Không có ảnh nào được gửi đi.</footer>
+
+  <!-- Hộp thoại sửa món -->
+  <dialog id="item-dialog" class="dialog">
+    <div id="item-dialog-body"></div>
+  </dialog>
+
+  <!-- Hộp thoại đặt tên khi lưu bộ -->
+  <dialog id="save-dialog" class="dialog dialog-small">
+    <form id="save-form" method="dialog">
+      <p class="eyebrow">Lưu bộ</p>
+      <h3>Đặt tên cho bộ này</h3>
+      <label class="field">
+        <span>Tên bộ</span>
+        <input type="text" name="name" maxlength="60" required>
+      </label>
+      <div class="dialog-actions">
+        <button type="button" class="btn" data-close>Hủy</button>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Hộp thoại xem lại bộ đã lưu -->
+  <dialog id="outfit-dialog" class="dialog dialog-wide">
+    <div id="outfit-dialog-body"></div>
+  </dialog>
+
+  <!-- Hộp thoại xác nhận -->
+  <dialog id="confirm-dialog" class="dialog dialog-small">
+    <form method="dialog">
+      <p id="confirm-text"></p>
+      <div class="dialog-actions">
+        <button value="cancel" class="btn">Hủy</button>
+        <button value="ok" class="btn btn-danger" id="confirm-ok">Xóa</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
